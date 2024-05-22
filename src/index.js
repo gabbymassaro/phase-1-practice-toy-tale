@@ -1,12 +1,10 @@
 let addToy = false;
 let toyArray = []
 
-
 document.addEventListener("DOMContentLoaded", () => {
   const addBtn = document.querySelector("#new-toy-btn");
   const toyFormContainer = document.querySelector(".container");
   const toyCollection = document.getElementById("toy-collection")
-
 
   addBtn.addEventListener("click", () => {
     // hide & seek with the form
@@ -29,29 +27,34 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const createCards = () => {
       toyArray.forEach(function(toy) {
-        console.log(toy.id)
         const div = document.createElement('div')
+        div.className = "card"
         div.textContent = toy.id
-        toyCollection.appendChild(div).className = "cards"
-        cards = document.querySelector(".cards")
-
-        console.log(toy.name)
+        
         const h2 = document.createElement('h2')
         h2.textContent = toy.name
-        cards.append(h2)
-
-        console.log(toy.iamge)
+        
         const img = document.createElement('img')
         img.src = toy.image
-        cards.append(img)
-
-        console.log(toy.likes)
+        img.classList.add("toy-avatar")
+        
         const p = document.createElement('p')
         p.textContent = (toy.likes)
-        cards.append(p)
+
+        const button = document.createElement('button')
+        button.textContent = "Like ❤️"
+        button.className = "like-btn"
+        button.id = toy.id
+        
+        div.appendChild(h2)
+        div.appendChild(img)
+        div.appendChild(p)
+        div.appendChild(button)
+
+        toyCollection.appendChild(div)
       }) 
+
+
     }
-    
+
 });
-
-
