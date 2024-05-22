@@ -1,4 +1,5 @@
 let addToy = false;
+let toyPictures 
 
 document.addEventListener("DOMContentLoaded", () => {
   const addBtn = document.querySelector("#new-toy-btn");
@@ -10,6 +11,16 @@ document.addEventListener("DOMContentLoaded", () => {
       toyFormContainer.style.display = "block";
     } else {
       toyFormContainer.style.display = "none";
-    }
+    } 
   });
+
+  fetch("http://localhost:3000/toys")
+  .then(function(response) {
+    return response.json()
+  })
+  .then(function(data) {
+    toyPictures = data
+  })
+
+ 
 });
