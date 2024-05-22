@@ -1,10 +1,10 @@
 let addToy = false;
 let toyArray = []
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", (e) => {
   const addBtn = document.querySelector("#new-toy-btn");
   const toyFormContainer = document.querySelector(".container");
-  const toyCollection = document.getElementById("toy-collection")
+  const toyCollection = document.getElementById("toy-collection");
 
   addBtn.addEventListener("click", () => {
     // hide & seek with the form
@@ -16,6 +16,28 @@ document.addEventListener("DOMContentLoaded", () => {
     } 
   });
 
+  toyFormContainer.addEventListener("submit", formSubmit);
+  function formSubmit(e){
+    e.preventDefault()
+    let formData 
+    console.log(e.target.value)
+    fetch("http://localhost:3000/toys", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Accept": "application/json"
+      },
+      body: formData
+    })
+    .then(function(response) {
+      return response.json()
+    })
+    .then(function(data) {
+      console.log(data)
+      createCards()
+    })
+  }
+  
   fetch("http://localhost:3000/toys")
     .then(function(response) {
       return response.json()
@@ -53,8 +75,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
         toyCollection.appendChild(div)
       }) 
-
-
     }
 
-});
+})
