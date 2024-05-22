@@ -33,21 +33,22 @@ document.addEventListener("DOMContentLoaded", () => {
         const div = document.createElement('div')
         div.textContent = toy.id
         toyCollection.appendChild(div).className = "cards"
+        cards = document.querySelector(".cards")
 
         console.log(toy.name)
         const h2 = document.createElement('h2')
         h2.textContent = toy.name
-        toyCollection.appendChild(h2).className = "cards"
+        cards.append(h2)
 
         console.log(toy.iamge)
         const img = document.createElement('img')
         img.src = toy.image
-        toyCollection.appendChild(img).className = "cards"
+        cards.append(img)
 
         console.log(toy.likes)
         const p = document.createElement('p')
         p.textContent = (toy.likes)
-        toyCollection.appendChild(p).className = "cards"
+        cards.append(p)
       }) 
     }
     
