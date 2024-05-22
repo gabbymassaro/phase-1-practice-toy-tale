@@ -1,5 +1,4 @@
 let addToy = false;
-let toyArray = []
 
 document.addEventListener("DOMContentLoaded", (e) => {
   e.preventDefault()
@@ -20,41 +19,35 @@ document.addEventListener("DOMContentLoaded", (e) => {
       .then(function(response) {
         return response.json()
       })
-      .then(function(data) {
-        toyArray = data
-        createCards()
-      })
+      .then(data => data.forEach(createCards));
   }
 
-  const createCards = () => {
-    toyCollection.innerHTML = "";
-    toyArray.forEach(function(toy) {
-      const div = document.createElement('div')
-      div.className = "card"
-      div.textContent = toy.id
-      
-      const h2 = document.createElement('h2')
-      h2.textContent = toy.name
-      
-      const img = document.createElement('img')
-      img.src = toy.image
-      img.classList.add("toy-avatar")
-      
-      const p = document.createElement('p')
-      p.textContent = (toy.likes)
+  const createCards = (toy) => {
+    const div = document.createElement('div')
+    div.className = "card"
+    div.textContent = toy.id
+    
+    const h2 = document.createElement('h2')
+    h2.textContent = toy.name
+    
+    const img = document.createElement('img')
+    img.src = toy.image
+    img.classList.add("toy-avatar")
+    
+    const p = document.createElement('p')
+    p.textContent = (toy.likes)
 
-      const button = document.createElement('button')
-      button.textContent = "Like ❤️"
-      button.className = "like-btn"
-      button.id = toy.id
-      
-      div.appendChild(h2)
-      div.appendChild(img)
-      div.appendChild(p)
-      div.appendChild(button)
+    const button = document.createElement('button')
+    button.textContent = "Like ❤️"
+    button.className = "like-btn"
+    button.id = toy.id
+    
+    div.appendChild(h2)
+    div.appendChild(img)
+    div.appendChild(p)
+    div.appendChild(button)
 
-      toyCollection.appendChild(div)
-    }) 
+    toyCollection.appendChild(div)
   }
 
   const toyFormContainer = document.querySelector(".container");
@@ -82,10 +75,7 @@ document.addEventListener("DOMContentLoaded", (e) => {
         .then(function(response) {
           return response.json()
         })
-        .then(function(data) {
-          toyArray.push(data)
-          createCards();
-        })
+        .then(data => createCards(data))
   })
   fetchToys()
 })
