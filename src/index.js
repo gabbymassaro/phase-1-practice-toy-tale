@@ -3,6 +3,9 @@ let addToy = false;
 document.addEventListener("DOMContentLoaded", () => {
   const addBtn = document.querySelector("#new-toy-btn");
   const toyFormContainer = document.querySelector(".container");
+  const toyCollection = document.getElementById("toy-collection")
+
+
   addBtn.addEventListener("click", () => {
     // hide & seek with the form
     addToy = !addToy;
@@ -19,9 +22,17 @@ document.addEventListener("DOMContentLoaded", () => {
         return response.json()
       })
       .then(data => {
-        console.log(data)
+        data.forEach(createCards)
       })
   }
-  getToys()
 
+  const createCards = (toy) => {
+    const div = document.createElement("div")
+    div.className = "card"
+    div.textContent = toy.id
+    toyCollection.appendChild(div)
+  }
+
+
+  getToys()
 });
