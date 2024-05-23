@@ -41,6 +41,27 @@ document.addEventListener("DOMContentLoaded", () => {
     button.className = "like-btn"
     img.classList = "toy-avatar"
 
+    button.addEventListener("click", () => {
+      let newLikes = toy.likes++
+      console.log(newLikes)
+      fetch("http://localhost:3000/toys/" + toy.id, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json"
+        }, 
+        body: JSON.stringify({
+          "likes": newLikes
+        })
+      })
+        .then(function (response) {
+          return response.json()
+        })
+        .then(data => {
+          (p.textContent = newLikes)
+        })
+    })
+
     div.appendChild(h2)
     div.appendChild(img)
     div.appendChild(p)
@@ -70,11 +91,6 @@ document.addEventListener("DOMContentLoaded", () => {
         .then(data => {
           (createCards(data))
         })
-    
   })
-
-
-
-
   getToys()
 });
