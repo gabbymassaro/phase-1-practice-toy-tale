@@ -30,15 +30,18 @@ document.addEventListener("DOMContentLoaded", () => {
     const img = document.createElement('img')
     const p = document.createElement('p')
     const button = document.createElement('button')
+    const deleteButton = document.createElement('button')
 
     div.textContent = toy.id
     h2.textCOntent = toy.name
     img.src = toy.image
     p.textContent = toy.likes
     button.textContent = "Like ❤️"
+    deleteButton.textContent = "Delete"
 
     div.className = "card"
     button.className = "like-btn"
+    deleteButton.className = "delete-btn"
     img.classList = "toy-avatar"
 
     button.addEventListener("click", () => {
@@ -62,10 +65,32 @@ document.addEventListener("DOMContentLoaded", () => {
         })
     })
 
+    deleteButton.addEventListener("click", (e) => {
+      console.log("Hi, delete please")
+      let card = toy.id
+      console.log(card)
+
+      fetch("http://localhost:3000/toys/" + toy.id, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json"
+        }, 
+      })
+        .then(function (response) {
+          return response.json()
+        })
+        .then(data => {
+         console.log(data)
+          deleteButton.parentNode.remove()
+        })
+    })
+
     div.appendChild(h2)
     div.appendChild(img)
     div.appendChild(p)
     div.appendChild(button)
+    div.appendChild(deleteButton)
     toyCollection.appendChild(div)
   }
 
