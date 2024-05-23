@@ -28,8 +28,26 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const createCards = (toy) => {
     const div = document.createElement("div")
-    div.className = "card"
+    const h2 = document.createElement("h2")
+    const img = document.createElement('img')
+    const p = document.createElement('p')
+    const button = document.createElement('button')
+
     div.textContent = toy.id
+    h2.textCOntent = toy.name
+    img.src = toy.image
+    p.textContent = toy.likes
+    button.textContent = "Like ❤️"
+
+
+    div.className = "card"
+    button.className = "like-btn"
+    img.classList = "toy-avatar"
+
+    div.appendChild(h2)
+    div.appendChild(img)
+    div.appendChild(p)
+    div.appendChild(button)
     toyCollection.appendChild(div)
   }
 
