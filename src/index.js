@@ -14,13 +14,15 @@ document.addEventListener("DOMContentLoaded", (e) => {
     } 
   });
 
-  const fetchToys = () =>{
+  const fetchToys = () => {
     fetch("http://localhost:3000/toys")
       .then(function(response) {
         return response.json()
       })
-      .then(data => data.forEach(createCards));
-  }
+      .then(data => {
+        data.forEach(createCards);
+      })
+    }
 
   const createCards = (toy) => {
     const div = document.createElement('div')
@@ -41,6 +43,24 @@ document.addEventListener("DOMContentLoaded", (e) => {
     button.textContent = "Like ❤️"
     button.className = "like-btn"
     button.id = toy.id
+
+    button.addEventListener("click", () => {
+      let newNumberOfLikes = toy.likes++
+      fetch("http://localhost:3000/toys/" + toy.id, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json"
+        },
+        body: JSON.stringify({
+          "likes": newNumberOfLikes
+        })
+      })
+        .then(response => response.json())
+        .then(data => {
+          p.textContent = newNumberOfLikes
+        })
+    })
     
     div.appendChild(h2)
     div.appendChild(img)
@@ -75,7 +95,10 @@ document.addEventListener("DOMContentLoaded", (e) => {
         .then(function(response) {
           return response.json()
         })
-        .then(data => createCards(data))
+        .then(data => {
+          createCards(data)
+        })
   })
   fetchToys()
-})
+
+  })
