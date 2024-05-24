@@ -2,9 +2,10 @@ let addToy = false;
 
 document.addEventListener("DOMContentLoaded", () => {
   const addBtn = document.querySelector("#new-toy-btn");
-  const toyFormContainer = document.querySelector(".container");
+  const toyCollection = document.getElementById("toy-collection")
+
+
   addBtn.addEventListener("click", () => {
-    // hide & seek with the form
     addToy = !addToy;
     if (addToy) {
       toyFormContainer.style.display = "block";
@@ -12,4 +13,109 @@ document.addEventListener("DOMContentLoaded", () => {
       toyFormContainer.style.display = "none";
     }
   });
+
+  const getToys = () => {
+    fetch("http://localhost:3000/toys")
+      .then(function (response) {
+        return response.json()
+      })
+      .then(data => {
+        data.forEach(createCards)
+      })
+  }
+
+  const createCards = (toy) => {
+    const div = document.createElement("div")
+    const h2 = document.createElement("h2")
+    const img = document.createElement('img')
+    const p = document.createElement('p')
+    const button = document.createElement('button')
+    const deleteButton = document.createElement('button')
+
+    div.textContent = toy.id
+    h2.textCOntent = toy.name
+    img.src = toy.image
+    p.textContent = toy.likes
+    button.textContent = "Like ❤️"
+    deleteButton.textContent = "Delete"
+
+    div.className = "card"
+    button.className = "like-btn"
+    deleteButton.className = "delete-btn"
+    img.classList = "toy-avatar"
+
+    button.addEventListener("click", () => {
+      let newLikes = toy.likes++
+      console.log(newLikes)
+      fetch("http://localhost:3000/toys/" + toy.id, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json"
+        }, 
+        body: JSON.stringify({
+          "likes": newLikes
+        })
+      })
+        .then(function (response) {
+          return response.json()
+        })
+        .then(data => {
+          (p.textContent = newLikes)
+        })
+    })
+
+    deleteButton.addEventListener("click", (e) => {
+      console.log("Hi, delete please")
+      let card = toy.id
+      console.log(card)
+
+      fetch("http://localhost:3000/toys/" + toy.id, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json"
+        }, 
+      })
+        .then(function (response) {
+          return response.json()
+        })
+        .then(data => {
+         console.log(data)
+          deleteButton.parentNode.remove()
+        })
+    })
+
+    div.appendChild(h2)
+    div.appendChild(img)
+    div.appendChild(p)
+    div.appendChild(button)
+    div.appendChild(deleteButton)
+    toyCollection.appendChild(div)
+  }
+
+  const toyFormContainer = document.querySelector(".container");
+  toyFormContainer.addEventListener("submit", (e) => {
+    e.preventDefault()
+    let toyName = document.querySelectorAll(".input-text")[0].value
+    let toyUrl = document.querySelectorAll(".input-text")[1].value
+
+    let body = {name: toyName, image: toyUrl, likes: 0}
+
+      fetch("http://localhost:3000/toys", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json"
+        }, 
+        body: JSON.stringify(body)
+      })
+        .then(function (response) {
+          return response.json()
+        })
+        .then(data => {
+          (createCards(data))
+        })
+  })
+  getToys()
 });
